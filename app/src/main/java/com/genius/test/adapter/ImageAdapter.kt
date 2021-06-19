@@ -6,18 +6,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.pexelsapi.retrofit.response.PhotosItem
 import com.genius.test.DashboardActivity
 import com.genius.test.R
+import com.genius.test.retrofit.response.PhotosItem
 
-class ImageAdapter(
+class ImageAdapter (
     var mContext: DashboardActivity,
     var mList: ArrayList<PhotosItem>,
     var clickListener: SetOnClickListener
 ): RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
     class ImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var searchItem1: ImageView = itemView.findViewById<ImageView>(R.id.searchItem)
+        var searchItem1: ImageView = itemView.findViewById<ImageView>(R.id.searchItem1)
 
     }
 
@@ -27,6 +27,7 @@ class ImageAdapter(
         return  ImageViewHolder(view)
 
     }
+
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         holder.searchItem1.load(mList[position].src?.small){

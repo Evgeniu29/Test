@@ -1,6 +1,6 @@
-package com.example.pexelsapi.retrofit
+package com.genius.test.retrofit
 
-import com.example.pexelsapi.retrofit.response.*
+import com.genius.test.retrofit.response.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -8,11 +8,13 @@ import retrofit2.http.Query
 
 interface ApiInterface {
 
-    @GET("search")
+    @GET("curated")
     fun getSearchList(
-            @Query("query") query:String?="Ocean",
-            @Query("per_page") per_page:Int?=80,
-            @Query("page") page:Int?=1
+
+            @Query("page") page:Int?=1,
+            @Query("per_page") per_page:Int?=80
+
+
 
     ): Call<SearchListResponse>
 }

@@ -6,9 +6,9 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/searchItem"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:id="@+id/searchItem1"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         tools:srcCompat="@tools:sample/backgrounds/scenic"
         android:scaleType="fitXY"/>
 

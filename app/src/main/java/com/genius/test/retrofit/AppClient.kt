@@ -1,4 +1,4 @@
-package com.example.pexelsapi.retrofit
+package com.genius.test.retrofit
 
 import android.content.Context
 import com.google.gson.GsonBuilder
@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit
 object AppClient {
 
     private var retrofit: Retrofit? = null
-
 
     val BASE_URL = "https://api.pexels.com/v1/"
 

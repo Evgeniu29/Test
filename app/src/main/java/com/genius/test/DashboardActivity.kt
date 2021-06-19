@@ -1,66 +1,83 @@
 package com.genius.test
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.pexelsapi.retrofit.ApiInterface
-import com.example.pexelsapi.retrofit.AppClient
-import com.example.pexelsapi.retrofit.response.PhotosItem
-import com.example.pexelsapi.retrofit.response.SearchListResponse
-import com.genius.test.LoginViewModel.LoginViewModel
 import com.genius.test.adapter.ImageAdapter
-import com.genius.test.common.InfiniteScrollListener
-
+import com.genius.test.database.UserEntity
+import com.genius.test.retrofit.ApiInterface
+import com.genius.test.retrofit.AppClient
+import com.genius.test.retrofit.response.PhotosItem
+import com.genius.test.retrofit.response.SearchListResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DashboardActivity : AppCompatActivity()  {
+
+
+class DashboardActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: MainActivityViewModel
 
     private lateinit var mAuth: FirebaseAuth
 
     private val appClient = AppClient.getClient(this@DashboardActivity)
-    private val apiInterface = appClient.create(ApiInterface::class.java)
 
+    private val apiInterface = appClient.create(ApiInterface::class.java)
 
     lateinit var imageAdapter: ImageAdapter
 
     lateinit var layoutManager: LinearLayoutManager
 
-    lateinit var searchedListRV:RecyclerView
+    lateinit var name_txt: EditText
+
+    lateinit var email_txt: EditText
+
+    lateinit var dataInfo: TextView
+
+    lateinit var searchedListRV: RecyclerView
+    var searchedText: String? = ""
+
+    lateinit var textInfo: TextView
+
+    var photoList: ArrayList<PhotosItem> = ArrayList()
+
+    var list: ArrayList<UserEntity> = ArrayList()
 
 
-    var searchedText: String?= ""
+    var photo: String = ""
+
+    private val listViewType = mutableListOf<Int>()
+
+    private var startPage = 1
+    private var isLoading = false
+    private val limit = 9
+
+    private val progressBar: ProgressBar? = null
+
+    var name = ""
+
+    var email = ""
+
+    var im = ""
 
 
-    var photosList: ArrayList<PhotosItem> = ArrayList()
-
-    var currentPage = 1
-
-
-    lateinit var loginViewModel: LoginViewModel
-
+    lateinit var user:UserEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
-
-
-
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -70,75 +87,103 @@ class DashboardActivity : AppCompatActivity()  {
 
         drawer.openDrawer(GravityCompat.START);
 
-
         var mNavigationView: NavigationView = findViewById(R.id.nav_view);
 
         mNavigationView.bringToFront();
 
-
         var headerLayout = mNavigationView.inflateHeaderView(R.layout.header);
 
-        var name_txt: TextView = headerLayout.findViewById(R.id.name_txt)
+        email_txt = headerLayout.findViewById(R.id.email_txt)
 
-        var email_txt: TextView = headerLayout.findViewById(R.id.email_txt)
+        dataInfo = headerLayout.findViewById(R.id.dataInfo)
 
         var image: de.hdodenhof.circleimageview.CircleImageView =
-            headerLayout.findViewById(R.id.profile_image)
+                headerLayout.findViewById(R.id.profile_image)
 
-        var sign_out_btn: Button = headerLayout.findViewById(R.id.sign_out_btn)
-
-        name_txt.text = currentUser?.displayName
-        email_txt.text = currentUser?.email
+        var logout: Button = headerLayout.findViewById(R.id.logout)
 
 
-        image.load(currentUser?.photoUrl)
+        name = mAuth.currentUser?.displayName.toString()
 
-        loginViewModel.insertData(this, name_txt.text.toString(), email_txt.text.toString())
+        email = mAuth.currentUser?.email.toString()
 
-        Toast.makeText(this@DashboardActivity, "Data inserted successfull", Toast.LENGTH_LONG).show()
+        im = mAuth.currentUser?.photoUrl.toString()
+
+        photo = currentUser?.photoUrl.toString()
+
+        image.load(photo)
 
 
-
-        sign_out_btn.setOnClickListener {
+        logout.setOnClickListener {
             mAuth.signOut()
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
             finish()
+
         }
 
 
+        user = UserEntity(0, name, email, im)
+
         searchedListRV = findViewById(R.id.searchedListRV)
-        layoutManager= GridLayoutManager(this,3, LinearLayoutManager.VERTICAL,false)
-        searchedListRV.setHasFixedSize(true) // use this setting to improve performance
+
+        GlobalScope.launch {
+
+            delay(3000L)
 
 
-        searchedText = "ocean"
+            viewModel = ViewModelProviders.of(this@DashboardActivity).get(MainActivityViewModel::class.java)
 
-        setCurrentItem()
 
-        searchedListRV?.clearOnScrollListeners()
-        searchedListRV?.addOnScrollListener(InfiniteScrollListener({ setCurrentItem() }, layoutManager))
+            viewModel.delete()
+
+            viewModel.insertUserInfo(user);
+
+            user = viewModel.loadSingle(email)
+
+
+
+            list = viewModel.getAllUsers() as ArrayList<UserEntity>
+
+
+            setCurrentItem()
+
+
+        }.start()
+
+        name_txt.setText(user.name)
+
+        email_txt.setText(user.email)
+
+
+
+        for (i in list){
+            println(i.email+i.name+i.id+i.image)
+        }
 
     }
 
 
-    private fun setCurrentItem(){
+    private fun setCurrentItem() {
         try {
 
-            val observable = apiInterface.getSearchList(query=searchedText , per_page=80,page=1)
-            observable.enqueue(object: Callback<SearchListResponse> {
+            val observable = apiInterface.getSearchList(1, 27)
+            observable.enqueue(object : Callback<SearchListResponse> {
                 override fun onResponse(
                         call: Call<SearchListResponse>,
                         response: Response<SearchListResponse>
                 ) {
 
-                    if (response.isSuccessful){
-                        if (!response.body()?.photos.isNullOrEmpty()){
-                            photosList.clear()
-                            response.body()?.photos?.let { photosList.addAll(it) }
+                    if (response.isSuccessful) {
+                        if (!response.body()?.photos.isNullOrEmpty()) {
+                            photoList.clear()
+
+
+
+                            response.body()?.photos?.let { photoList.addAll(it) }
                             imageAdapter = ImageAdapter(
                                     this@DashboardActivity,
-                                    photosList,  object: ImageAdapter.SetOnClickListener{
+                                    photoList, object : ImageAdapter.SetOnClickListener {
                                 override fun itemClicked(
                                         position: Int,
                                         photosItem: PhotosItem
@@ -146,11 +191,10 @@ class DashboardActivity : AppCompatActivity()  {
 
                                 }
 
-                                    }
+                            }
                             )
 
                             searchedListRV.adapter = imageAdapter
-                            listChecker()
 
                         }
                     }
@@ -162,23 +206,13 @@ class DashboardActivity : AppCompatActivity()  {
                 }
 
             })
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
             e.printStackTrace()
         }
     }
 
-    fun listChecker(){
-        if (photosList.isNullOrEmpty()){
-            searchedListRV.visibility = View.GONE
-        }else{
-            searchedListRV.visibility = View.VISIBLE
-        }
-    }
-
-
-    }
-
+}
 
 
 

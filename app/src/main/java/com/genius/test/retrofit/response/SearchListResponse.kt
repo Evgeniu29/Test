@@ -1,4 +1,4 @@
-package com.example.pexelsapi.retrofit.response
+package com.genius.test.retrofit.response
 
 import com.google.gson.annotations.SerializedName
 
