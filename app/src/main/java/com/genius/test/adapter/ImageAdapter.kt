@@ -46,4 +46,11 @@ class ImageAdapter (
         return mList.size
     }
 
+    fun addData(mList: ArrayList<PhotosItem>) {
+        var size = this.mList.size
+        this.mList.addAll(mList)
+        var sizeNew = this.mList.size
+        notifyItemRangeChanged(size, sizeNew)
+    }
+
 }
