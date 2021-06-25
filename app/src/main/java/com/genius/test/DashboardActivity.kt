@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -71,14 +72,14 @@ class DashboardActivity : AppCompatActivity() {
     var visibleItemCount = 0
     var totalItemCount: Int = 1
     var firstVisiblesItems = 0
-    var totalPages = 15 // get your total pages from web service first response
+    var totalPages = 200 // get your total pages from web service first response
 
     var current_page = 0
 
     var canLoadMoreData = true // make this variable false while your web service call is going on.
 
 
-    var linearLayoutManager: LinearLayoutManager? = null
+    var gridLayoutManager: GridLayoutManager? = null
 
     lateinit var user: UserEntity
 
@@ -129,15 +130,13 @@ class DashboardActivity : AppCompatActivity() {
 
         }
 
-
         user = UserEntity(0, name, email, im)
 
         searchedListRV = findViewById(R.id.searchedListRV)
 
-        linearLayoutManager = LinearLayoutManager(this)
+        gridLayoutManager =  GridLayoutManager (this, 3)
 
-        searchedListRV.setLayoutManager(linearLayoutManager)
-
+        searchedListRV.setLayoutManager(gridLayoutManager)
 
 
         GlobalScope.launch {
@@ -170,22 +169,19 @@ class DashboardActivity : AppCompatActivity() {
 
         email_txt.setText(user.email)
 
-
-
-
-
-
         searchedListRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) //check for scroll down
                 {
-                    visibleItemCount = linearLayoutManager!!.childCount
-                    totalItemCount = linearLayoutManager!!.itemCount
-                    firstVisiblesItems = linearLayoutManager!!.findFirstVisibleItemPosition()
+                    visibleItemCount = gridLayoutManager!!.childCount
+                    totalItemCount = gridLayoutManager!!.itemCount
+                    firstVisiblesItems = gridLayoutManager!!.findFirstVisibleItemPosition()
                     if (canLoadMoreData) {
                         if (visibleItemCount + firstVisiblesItems >= totalItemCount) {
                             if (current_page < totalPages) {
                                 canLoadMoreData = false
+
+                                current_page++
 
                                 setCurrentItem(current_page)
 
@@ -197,8 +193,39 @@ class DashboardActivity : AppCompatActivity() {
 
 
                         }
+
+
                     }
                 }
+
+                if (dy < 0) //check for scroll down
+                {
+                    visibleItemCount = gridLayoutManager!!.childCount
+                    totalItemCount = gridLayoutManager!!.itemCount
+                    firstVisiblesItems = gridLayoutManager!!.findFirstVisibleItemPosition()
+                    if (canLoadMoreData) {
+                        if (visibleItemCount + firstVisiblesItems >= totalItemCount) {
+                            if (current_page < totalPages) {
+                                canLoadMoreData = false
+
+                                current_page--
+
+
+                                setCurrentItem(current_page)
+
+                                canLoadMoreData = true
+
+
+
+                            }
+
+
+                        }
+
+
+                    }
+                }
+
             }
 
 
