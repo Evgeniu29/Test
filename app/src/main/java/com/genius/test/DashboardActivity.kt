@@ -68,7 +68,7 @@ class DashboardActivity() : AppCompatActivity(), PaginationCallback {
 
     var im = ""
 
-    var current_page = 0
+    var current_page: Int = 0
 
     var gridLayoutManager: GridLayoutManager? = null
 
@@ -148,7 +148,6 @@ class DashboardActivity() : AppCompatActivity(), PaginationCallback {
 
             list = viewModel.getAllUsers() as ArrayList<UserEntity>
 
-
         }.start()
 
         name_txt.setText(user.name)
@@ -158,6 +157,7 @@ class DashboardActivity() : AppCompatActivity(), PaginationCallback {
     }
 
     private fun setCurrentItem(current_page: Int) {
+
 
         try {
 
@@ -178,35 +178,38 @@ class DashboardActivity() : AppCompatActivity(), PaginationCallback {
                                             this@DashboardActivity,
                                             photoList)
 
+
                         }
-                        searchedListRV.adapter = imageAdapter
+
+
+                        searchedListRV.adapter= imageAdapter
+
+
 
                     }
 
 
-
-
                 }
-
 
                 override fun onFailure(call: Call<SearchListResponse>, t: Throwable) {
-
                     t.printStackTrace()
+
                 }
 
-            })
 
-        } catch (e: Exception) {
+
+        })}
+
+        catch (e: Exception) {
 
             e.printStackTrace()
         }
 
-
-
     }
 
     override fun loadNextPage() {
-        setCurrentItem(current_page++)
+        current_page++
+        setCurrentItem(current_page)
     }
 
 }

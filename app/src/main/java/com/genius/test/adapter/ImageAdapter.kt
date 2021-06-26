@@ -17,7 +17,7 @@ class ImageAdapter(
         var list: ArrayList<PhotosItem>
 
 ): RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
-     val callback: PaginationCallback =   context
+     var callback: PaginationCallback =   context
 
 
     class ImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -35,10 +35,14 @@ class ImageAdapter(
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         holder.searchItem1.load(list[position].src?.small){
             placeholder(R.drawable.ic_launcher_foreground)
-            if(position+1==list.size){
-                val loadNextPage = callback.loadNextPage();  // Callback
-            }
+        }
 
+        if(position+1!=list.size){
+
+        }
+
+        else {
+            callback.loadNextPage();
         }
 
     }
