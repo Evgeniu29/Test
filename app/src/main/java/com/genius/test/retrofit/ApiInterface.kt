@@ -11,7 +11,7 @@ interface ApiInterface {
     @GET("curated")
     fun getSearchList(
             @Query("page") pageIndex: Int = 0,
-            @Query("per_page") perPage: Int = 15
+            @Query("per_page") perPage: Int = 9
 
 
     ): Call<SearchListResponse>

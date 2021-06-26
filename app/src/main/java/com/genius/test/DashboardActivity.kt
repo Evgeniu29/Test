@@ -25,8 +25,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-class DashboardActivity : AppCompatActivity() {
+class DashboardActivity() : AppCompatActivity(), PaginationCallback {
 
     private lateinit var viewModel: MainActivityViewModel
 
@@ -69,19 +68,14 @@ class DashboardActivity : AppCompatActivity() {
 
     var im = ""
 
-    var visibleItemCount = 0
-    var totalItemCount: Int = 1
-    var firstVisiblesItems = 0
-    var totalPages = 200 // get your total pages from web service first response
-
     var current_page = 0
-
-    var canLoadMoreData = true // make this variable false while your web service call is going on.
-
 
     var gridLayoutManager: GridLayoutManager? = null
 
     lateinit var user: UserEntity
+
+
+    var pageNum = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,18 +128,15 @@ class DashboardActivity : AppCompatActivity() {
 
         searchedListRV = findViewById(R.id.searchedListRV)
 
-        gridLayoutManager =  GridLayoutManager (this, 3)
+        gridLayoutManager =  GridLayoutManager(this, 3)
 
         searchedListRV.setLayoutManager(gridLayoutManager)
 
-
         GlobalScope.launch {
 
-            delay(3000L)
-
+            delay(1000L)
 
             viewModel = ViewModelProviders.of(this@DashboardActivity).get(MainActivityViewModel::class.java)
-
 
             viewModel.delete()
 
@@ -155,12 +146,7 @@ class DashboardActivity : AppCompatActivity() {
 
             setCurrentItem(current_page)
 
-
             list = viewModel.getAllUsers() as ArrayList<UserEntity>
-
-            for (i in list) {
-                println(i.email + i.name + i.id + i.image)
-            }
 
 
         }.start()
@@ -169,76 +155,13 @@ class DashboardActivity : AppCompatActivity() {
 
         email_txt.setText(user.email)
 
-        searchedListRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) //check for scroll down
-                {
-                    visibleItemCount = gridLayoutManager!!.childCount
-                    totalItemCount = gridLayoutManager!!.itemCount
-                    firstVisiblesItems = gridLayoutManager!!.findFirstVisibleItemPosition()
-                    if (canLoadMoreData) {
-                        if (visibleItemCount + firstVisiblesItems >= totalItemCount) {
-                            if (current_page < totalPages) {
-                                canLoadMoreData = false
-
-                                current_page++
-
-                                setCurrentItem(current_page)
-
-                                canLoadMoreData = true
-
-
-
-                            }
-
-
-                        }
-
-
-                    }
-                }
-
-                if (dy < 0) //check for scroll down
-                {
-                    visibleItemCount = gridLayoutManager!!.childCount
-                    totalItemCount = gridLayoutManager!!.itemCount
-                    firstVisiblesItems = gridLayoutManager!!.findFirstVisibleItemPosition()
-                    if (canLoadMoreData) {
-                        if (visibleItemCount + firstVisiblesItems >= totalItemCount) {
-                            if (current_page < totalPages) {
-                                canLoadMoreData = false
-
-                                current_page--
-
-
-                                setCurrentItem(current_page)
-
-                                canLoadMoreData = true
-
-
-
-                            }
-
-
-                        }
-
-
-                    }
-                }
-
-            }
-
-
-        })
-
-
     }
 
     private fun setCurrentItem(current_page: Int) {
 
         try {
 
-            val observable = apiInterface.getSearchList(current_page, 15)
+            val observable = apiInterface.getSearchList(current_page, 9)
             observable.enqueue(object : Callback<SearchListResponse> {
                 override fun onResponse(
                         call: Call<SearchListResponse>,
@@ -249,27 +172,22 @@ class DashboardActivity : AppCompatActivity() {
                         if (!response.body()?.photos.isNullOrEmpty()) {
                             photoList.clear()
 
-
-
                             response.body()?.photos?.let { photoList.addAll(it) }
-                            imageAdapter = ImageAdapter(
-                                    this@DashboardActivity,
-                                    photoList, object : ImageAdapter.SetOnClickListener {
-                                override fun itemClicked(
-                                        position: Int,
-                                        photosItem: PhotosItem
-                                ) {
-
-                                }
-
-                            }
-                            )
-
-                            searchedListRV.adapter = imageAdapter
+                            imageAdapter =
+                                    ImageAdapter(
+                                            this@DashboardActivity,
+                                            photoList)
 
                         }
+                        searchedListRV.adapter = imageAdapter
+
                     }
+
+
+
+
                 }
+
 
                 override fun onFailure(call: Call<SearchListResponse>, t: Throwable) {
 
@@ -277,13 +195,29 @@ class DashboardActivity : AppCompatActivity() {
                 }
 
             })
+
         } catch (e: Exception) {
 
             e.printStackTrace()
         }
 
+
+
     }
+
+    override fun loadNextPage() {
+        setCurrentItem(current_page++)
+    }
+
 }
+
+
+
+
+
+
+
+
 
 
 
