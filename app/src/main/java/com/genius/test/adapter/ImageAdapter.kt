@@ -1,5 +1,6 @@
 package com.genius.test.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.genius.test.Artist
-import com.genius.test.DashboardActivity
 import com.genius.test.R
 
 
 class ImageAdapter(
-    var context: DashboardActivity,
+    var context: Context,
     var list: ArrayList<Artist>
 
 ): RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
