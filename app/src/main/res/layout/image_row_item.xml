@@ -50,7 +50,7 @@
                 android:layout_alignParentBottom="@id/title"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="-383dp"
+                android:layout_marginBottom="-300dp"
                 android:layout_toRightOf="@id/image"
                 android:padding="15dp"
                 android:textColorHint="#7a8089"

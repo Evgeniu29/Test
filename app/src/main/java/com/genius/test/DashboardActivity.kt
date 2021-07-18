@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -122,12 +122,10 @@ class DashboardActivity : AppCompatActivity() {
             database.child(artist1.artist.toString()).setValue(artist1).addOnSuccessListener {
 
 
-                Toast.makeText(this@DashboardActivity, "Successfully Saved", Toast.LENGTH_SHORT)
-                    .show()
+
 
             }.addOnFailureListener {
 
-                Toast.makeText(this@DashboardActivity, "Failed", Toast.LENGTH_SHORT).show()
 
             }
 
@@ -141,12 +139,7 @@ class DashboardActivity : AppCompatActivity() {
             database.child(artist2.artist.toString()).setValue(artist2).addOnSuccessListener {
 
 
-                Toast.makeText(this@DashboardActivity, "Successfully Saved", Toast.LENGTH_SHORT)
-                    .show()
-
             }.addOnFailureListener {
-
-                Toast.makeText(this@DashboardActivity, "Failed", Toast.LENGTH_SHORT).show()
 
 
             }
@@ -161,12 +154,8 @@ class DashboardActivity : AppCompatActivity() {
             database.child(artist3.artist.toString()).setValue(artist3).addOnSuccessListener {
 
 
-                Toast.makeText(this@DashboardActivity, "Successfully Saved", Toast.LENGTH_SHORT)
-                    .show()
-
             }.addOnFailureListener {
 
-                Toast.makeText(this@DashboardActivity, "Failed", Toast.LENGTH_SHORT).show()
 
 
             }  }
@@ -180,6 +169,16 @@ class DashboardActivity : AppCompatActivity() {
             artistList = readData("Justin Bieber", artistList)
 
             artistList = readData("Britney Spears", artistList)
+
+            viewModel =
+                ViewModelProviders.of(this@DashboardActivity)
+                    .get(MainActivityViewModel::class.java)
+
+            viewModel.delete()
+
+            viewModel.insertUserInfo(user)
+
+            user = viewModel.loadSingle(email)
 
 
 
@@ -235,10 +234,6 @@ class DashboardActivity : AppCompatActivity() {
                  var artistName = it.child("artist").value.toString()
 
 
-
-                 Toast.makeText(this, "Successfuly Read", Toast.LENGTH_SHORT).show()
-
-
                 var  artist = Artist(artistName, photo, title, description)
 
 
@@ -247,15 +242,12 @@ class DashboardActivity : AppCompatActivity() {
 
              } else {
 
-                 Toast.makeText(this, "User Doesn't Exist", Toast.LENGTH_SHORT).show()
-
 
              }
 
 
          }.addOnFailureListener {
 
-             Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
 
          }
 
