@@ -20,7 +20,6 @@ private lateinit  var mAuth: FirebaseAuth
 
 lateinit var enter: Button
 
-lateinit var viewModel: MainActivityViewModel
 
 var list: ArrayList<UserEntity> = ArrayList()
 
@@ -48,7 +47,6 @@ class MainActivity : AppCompatActivity() {
 
                 val dashboardIntent = Intent(this@MainActivity, DashboardActivity::class.java)
                 startActivity(dashboardIntent)
-
 
             }
 
