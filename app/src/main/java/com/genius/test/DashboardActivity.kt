@@ -133,7 +133,7 @@ class DashboardActivity : AppCompatActivity() {
                 "Justin Bieber",
                 "https://th.bing.com/th/id/OIP.wfg6sIM0YAd9wYn9Vj8QtwHaJf?pid=ImgDet&rs=1",
                 "Baby",
-                "Baby is a song by Canadian singer Justin Bieber, alongside American rapper Ludacris. It was released as the lead single on Bieber's debut album, My World 2.0. The track was written by Bieber, Christina Milian, Tricky Stewart (who worked with Bieber on a previous single One Time, and American R&B singer The-Dream and produced by the latter two.  It was available for digital download on January 18, 2010. The song received airplay directly after release, officially impacting mainstream and rhythmic radio on January 26, 2010. The song is uptempo R&B, blending together dance-pop and hip-hop elements, while using influences of doo-wop music. The song has received positive reviews from critics who complimented the song's effective lyrics and chorus and commended Ludacris' part and the song's ability to have an urban twist."
+                "Baby is a song by Canadian singer Justin Bieber, alongside American rapper Ludacris. It was released as the lead single on Bieber's debut album, My World 2.0. The track was written by Bieber, Christina Milian, Tricky Stewart (who worked with Bieber on a previous single One Time, and American R&B singer The-Dream and produced by the latter two.  It was available for digital download on January 18, 2010. The song received airplay directly after release, officially impacting mainstream and rhythmic radio on January 26, 2010."
             )
 
             database.child(artist2.artist.toString()).setValue(artist2).addOnSuccessListener {
