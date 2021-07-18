@@ -115,7 +115,7 @@ class DashboardActivity : AppCompatActivity() {
                 "Britney Spears",
                 "https://pic.lyricshub.ru/img/b/g/p/z/ytMepWZpGB.jpg",
                 "Lucky",
-                "Lucky is a song recorded by American singer Britney Spears, for her second studio album, Oops!... I Did It Again (2000). It was released on July 25, 2000, by Jive Records as the second single from the album. After meeting with songwriters Max Martin and Rami Yacoub in Sweden, the singer recorded numerous songs for the album, including Lucky. The song chronicles the story of a famous young actress named Lucky, who, despite seemingly having it all – fame, wealth, beauty – is truly lonely and unhappy on the inside. It received critical acclaim, with critics praising its melody and rhythm, and Spears vocals."
+                "Lucky is a song recorded by American singer Britney Spears, for her second studio album, Oops!... I Did It Again (2000). It was released on July 25, 2000, by Jive Records as the second single from the album. After meeting with songwriters Max Martin and Rami Yacoub in Sweden, the singer recorded numerous songs for the album, including Lucky."
             )
 
 
@@ -133,7 +133,7 @@ class DashboardActivity : AppCompatActivity() {
                 "Justin Bieber",
                 "https://th.bing.com/th/id/OIP.wfg6sIM0YAd9wYn9Vj8QtwHaJf?pid=ImgDet&rs=1",
                 "Baby",
-                "Baby is a song by Canadian singer Justin Bieber, alongside American rapper Ludacris. It was released as the lead single on Bieber's debut album, My World 2.0. The track was written by Bieber, Christina Milian, Tricky Stewart (who worked with Bieber on a previous single One Time, and American R&B singer The-Dream and produced by the latter two.  It was available for digital download on January 18, 2010. The song received airplay directly after release, officially impacting mainstream and rhythmic radio on January 26, 2010."
+                "Baby is a song by Canadian singer Justin Bieber, alongside American rapper Ludacris. It was released as the lead single on Bieber's debut album, My World 2.0. The track was written by Bieber, Christina Milian, Tricky Stewart (who worked with Bieber on a previous single One Time, and American R&B singer The-Dream and produced by the latter two."
             )
 
             database.child(artist2.artist.toString()).setValue(artist2).addOnSuccessListener {
@@ -148,7 +148,7 @@ class DashboardActivity : AppCompatActivity() {
                 "Michael Jackson",
                 "https://th.bing.com/th/id/OIP.IhlADTDIs8F-qdTQSZqoQwHaMb?pid=ImgDet&rs=1",
                 "Beat it",
-                "The song was released on February 14, 1983 as the album's third single. The guitar solo is performed by Eddie Van Halen, lead guitarist of hard rock band Van Halen. When initially contacted by Michael Jackson's producer, Van Halen thought he was receiving a prank call. Musicians of the group Toto contributed lead/bass guitar, synthesizer and drums to the recording. Beat It received two 1984 Grammy Awards: Record of the Year and Best Male Rock Vocal Performance. The famous music video is particularly notable for a synchronized dancing, a Jackson trademark that helped establish him as an international pop icon."
+                "The song was released on February 14, 1983 as the album's third single. The guitar solo is performed by Eddie Van Halen, lead guitarist of hard rock band Van Halen. When initially contacted by Michael Jackson's producer, Van Halen thought he was receiving a prank call. Musicians of the group Toto contributed lead/bass guitar, synthesizer and drums to the recording."
             )
 
             database.child(artist3.artist.toString()).setValue(artist3).addOnSuccessListener {
