@@ -148,7 +148,7 @@ class DashboardActivity : AppCompatActivity() {
                 "Michael Jackson",
                 "https://th.bing.com/th/id/OIP.IhlADTDIs8F-qdTQSZqoQwHaMb?pid=ImgDet&rs=1",
                 "Beat it",
-                "The song was released on February 14, 1983 as the album's third single. The guitar solo is performed by Eddie Van Halen, lead guitarist of hard rock band Van Halen. When initially contacted by Michael Jackson's producer, Van Halen thought he was receiving a prank call. Musicians of the group Toto contributed lead/bass guitar, synthesizer and drums to the recording."
+                "The song was released on February 14, 1983 as the album's third single. The guitar solo is performed by Eddie Van Halen, lead guitarist of hard rock band Van Halen. When initially contacted by Michael Jackson's producer, Van Halen thought he was receiving a prank call."
             )
 
             database.child(artist3.artist.toString()).setValue(artist3).addOnSuccessListener {
