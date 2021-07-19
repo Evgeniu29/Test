@@ -8,8 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.genius.test.Artist
 import com.genius.test.R
+import com.genius.test.model.Artist
 
 
 class ImageAdapter(

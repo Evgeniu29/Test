@@ -1,4 +1,4 @@
-package com.genius.test
+package com.genius.test.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
